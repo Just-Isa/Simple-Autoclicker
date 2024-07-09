@@ -12,6 +12,7 @@ layout = [
     [sg.Button("Set Position", key="find_cookie", pad=(0, 0)), sg.Text("Current Position: " + str(cookiePos), justification='left', key="cookie_pos_text"), sg.Checkbox("Use mouse position", key="use_mouse", pad=(2, 0))],
     [sg.Button("START CLICKER", key="start_clicker", pad=(0, 10)),  sg.Text("F1 TO START | X TO STOP", justification='left', key="cookie_pos_text")],
     [sg.Checkbox("Lock Mouse Position", key="lock_mouse", pad=(0, 0))],
+    [sg.Checkbox("Use Right Click", key="use_right_click", pad=(0, 0))]
 ]
 
 window = sg.Window("Clicccer", layout, element_justification='left', finalize=True)
@@ -19,14 +20,25 @@ window = sg.Window("Clicccer", layout, element_justification='left', finalize=Tr
 def clicker_loop():
     global stop_clicker
     if window["lock_mouse"].get():
-        while not stop_clicker:
-            mouse.move(cookiePos[0], cookiePos[1])
-            mouse.click()
-            time.sleep(0.01)
+        if window["use_right_click"]:
+            while not stop_clicker:
+                mouse.move(cookiePos[0], cookiePos[1])
+                mouse.right_click()
+                time.sleep(0.01)
+        else :
+            while not stop_clicker:
+                mouse.move(cookiePos[0], cookiePos[1])
+                mouse.click()
+                time.sleep(0.01)
     else:
-        while not stop_clicker:
-            mouse.click()
-            time.sleep(0.01)
+        if window["use_right_click"]:
+            while not stop_clicker:
+                mouse.right_click()
+                time.sleep(0.01)
+        else:
+            while not stop_clicker:
+                mouse.click()
+                time.sleep(0.01)
 
 # Function to handle keyboard events
 def keyboard_handler():
